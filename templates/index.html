@@ -25,7 +25,7 @@
     <button onclick="pauseTimer()">Pause</button>
     <button onclick="resetTimer()">Reset</button>
     <button onclick="toggleEdit()">Edit Timer</button>
-    <button onclick="toggleFocusMode()">Focus Mode</button>
+    <button id = "focusToggleBtn" onclick="toggleFocusMode()">Focus Mode</button>
   </div>
 
   <!-- Hidden Edit Form -->
@@ -106,6 +106,7 @@
     }
     function toggleFocusMode() {
       document.body.classList.toggle("focus-mode")
+
     }
     function handleSessionEnd() {
       if (isStudy) {

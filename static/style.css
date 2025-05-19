@@ -68,3 +68,10 @@ body.focus-mode #sessionLabel {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
+
+body.focus-mode #focusToggleBtn {
+  display: inline-block !important; /* except the Focus Mode toggle button */
+}
+
+
+
