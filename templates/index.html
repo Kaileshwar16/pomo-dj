@@ -1,12 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Pomodoro App</title>
-    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <meta charset="UTF-8" />
+  <title>Pomodoro App</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <h1>Welcome to Pomodoro App</h1>
-    <p>This is your base page.</p>
+  <!-- YouTube Background -->
+  <div id="video-container">
+    <iframe id="ytPlayer" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <!-- Foreground UI -->
+  <!-- JS -->
+<div id="content">
+  <h1>Pomodoro App</h1>
+
+  <!-- Timer Display -->
+  <div id="timerSection">
+    <h2 id="sessionLabel">Study Session</h2>
+    <div id="timer">25:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+    <button onclick="toggleEdit()">Edit Timer</button>
+    <button onclick="toggleFocusMode()">Focus Mode</button>
+  </div>
+
+  <!-- Hidden Edit Form -->
+  <div id="editSection" style="display: none; margin-top: 1rem;">
+    <label>Study (mins): <input type="number" id="studyTime" value="25" /></label>
+    <label>Short Break: <input type="number" id="shortBreak" value="5" /></label>
+    <label>Long Break: <input type="number" id="longBreak" value="15" /></label>
+    <button onclick="applySettings()">Apply</button>
+  </div>
+
+  <!-- YouTube -->
+  <div id="youtubeSection">
+    <input type="text" id="ytLink" placeholder="Enter YouTube URL" />
+    <button onclick="updateVideo()">Set Background Video</button>
+  </div>
+</div>
+  <script>
+    let timer = 25 * 60;
+    let timerDuration = 25 * 60;
+    let interval;
+    let isStudy = true;
+    let cycleCount = 0;
+
+    function updateVideo() {
+      const url = document.getElementById('ytLink').value;
+      const videoId = url.split('v=')[1]?.split('&')[0];
+      if (!videoId) return alert('Invalid YouTube URL');
+      document.getElementById('ytPlayer').src =
+        `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`;
+    }
+
+    function updateDisplay() {
+      const min = Math.floor(timer / 60);
+      const sec = timer % 60;
+      document.getElementById('timer').innerText =
+        `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function toggleEdit() {
+      const edit = document.getElementById("editSection");
+      edit.style.display = edit.style.display === "none" ? "block" : "none";
+    }
+
+    function applySettings() {
+      const study = parseInt(document.getElementById('studyTime').value) || 25;
+      timerDuration = study * 60;
+      timer = timerDuration;
+      isStudy = true;
+      cycleCount = 0;
+      document.getElementById("sessionLabel").innerText = "Study Session";
+      updateDisplay();
+      document.getElementById("editSection").style.display = "none";
+    }
+
+    function startTimer() {
+      if (interval) return;
+      interval = setInterval(() => {
+        if (timer <= 0) {
+          clearInterval(interval);
+          interval = null;
+          handleSessionEnd();
+          return;
+        }
+        timer--;
+        updateDisplay();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(interval);
+      interval = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timer = timerDuration;
+      updateDisplay();
+    }
+    function toggleFocusMode() {
+      document.body.classList.toggle("focus-mode")
+    }
+    function handleSessionEnd() {
+      if (isStudy) {
+        cycleCount++;
+        if (cycleCount % 4 === 0) {
+          timer = (parseInt(document.getElementById('longBreak').value) || 15) * 60;
+          document.getElementById("sessionLabel").innerText = "Long Break";
+          alert("Long break time!");
+        } else {
+          timer = (parseInt(document.getElementById('shortBreak').value) || 5) * 60;
+          document.getElementById("sessionLabel").innerText = "Short Break";
+          alert("Short break time!");
+        }
+      } else {
+        timer = (parseInt(document.getElementById('studyTime').value) || 25) * 60;
+        document.getElementById("sessionLabel").innerText = "Study Session";
+        alert("Back to study!");
+      }
+      isStudy = !isStudy;
+      updateDisplay();
+    }
+
+    window.onload = updateDisplay;
+  </script>
 </body>
 </html>
