@@ -10,6 +10,19 @@
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
+  <!--webchat--->
+
+<div id="chat-container">
+  <div id="chat-header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+    <h3 style="margin: 0; color: white; text-shadow: 0 0 5px rgba(0,0,0,0.5);">Live Chat</h3>
+    <button id="minimizeBtn" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">−</button>
+  </div>
+  <ul id="chatBox"></ul>
+  <div class="input-container">
+    <input id="chatInput" placeholder="Type message..." />
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
   <!-- YouTube Background -->
   <div id="video-container">
     <iframe id="ytPlayer" src="" frameborder="0" allow="autoplay" allowfullscreen></iframe>
@@ -202,10 +215,62 @@ function updateSpotifyPlayer() {
   const embedSrc = `https://open.spotify.com/embed/playlist/${playlistId}`;
   document.getElementById('spotifyPlayer').src = embedSrc;
 }
-    window.onload = function() { 
-      updateDisplay();
-      updateVideo();
-    };
-  </script>
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  const socket = new WebSocket("ws://" + window.location.host + "/ws");
+
+  const chatBox = document.getElementById("chatBox");
+  const chatInput = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const minimizeBtn = document.getElementById('minimizeBtn');
+  const chatContainer = document.getElementById('chat-container');
+
+  // WebSocket event handlers
+  socket.onopen = () => console.log("WebSocket connected");
+
+  socket.onmessage = function(event) {
+    const msg = document.createElement("li");
+    msg.textContent = event.data;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight; // auto scroll down on new message
+  };
+
+  socket.onerror = (e) => console.error("WebSocket error", e);
+  socket.onclose = () => console.log("WebSocket closed");
+
+  // Send message function
+  function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    if (socket.readyState === WebSocket.OPEN) {
+      console.log("Sending message:", message);
+      socket.send(message);
+      chatInput.value = "";
+    } else {
+      console.warn("Socket not open. Current state:", socket.readyState);
+    }
+  }
+
+  // Event listeners for send
+  sendBtn.addEventListener("click", sendMessage);
+
+  chatInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  });
+
+  // Minimize chat toggle
+  minimizeBtn.addEventListener('click', () => {
+    chatContainer.classList.toggle('minimized');
+    minimizeBtn.textContent = chatContainer.classList.contains('minimized') ? '+' : '−';
+  });
+
+  // Call your functions here after DOM is loaded
+  if (typeof updateDisplay === "function") updateDisplay();
+  if (typeof updateVideo === "function") updateVideo();
+});
+</script>
 </body>
 </html>
