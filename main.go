@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,7 @@ func (h *Hub) removeClient(c *Client) {
 		close(c.send)
 	}
 }
+
 func (h *Hub) broadcast(message []byte) {
 	h.lock.Lock()
 	clients := make([]*Client, 0, len(h.clients))
@@ -119,5 +121,9 @@ func main() {
 		client.readPump()
 	})
 
-	r.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	r.Run(":" + port)
 }
