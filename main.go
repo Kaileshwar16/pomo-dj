@@ -12,5 +12,5 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
-	r.Run(":8080")
+	r.Run("0.0.0.0:8080")
 }
