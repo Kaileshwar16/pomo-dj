@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pomodoro App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/htmx.org@1.9.2"></script>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
@@ -13,35 +16,38 @@
   </div>
 
   <!-- Foreground UI -->
-  <!-- JS -->
-<div id="content">
-  <h1>Pomodoro App</h1>
+  <div id="content">
+    <button id="settingsBtn" onclick="toggleSettings()">⚙️</button>
+    <h1>Pomodoro App</h1>
 
-  <!-- Timer Display -->
-  <div id="timerSection">
-    <h2 id="sessionLabel">Study Session</h2>
-    <div id="timer">25:00</div>
-    <button onclick="startTimer()">Start</button>
-    <button onclick="pauseTimer()">Pause</button>
-    <button onclick="resetTimer()">Reset</button>
-    <button onclick="toggleEdit()">Edit Timer</button>
-    <button id = "focusToggleBtn" onclick="toggleFocusMode()">Focus Mode</button>
+    <!-- Timer Display -->
+    <div id="timerSection">
+      <h2 id="sessionLabel">Study Session</h2>
+      <div id="timer">25:00</div>
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+      <button id="focusToggleBtn" onclick="toggleFocusMode()">Focus Mode</button>
+    </div>
   </div>
 
-  <!-- Hidden Edit Form -->
-  <div id="editSection" style="display: none; margin-top: 1rem;">
-    <label>Study (mins): <input type="number" id="studyTime" value="25" /></label>
-    <label>Short Break: <input type="number" id="shortBreak" value="5" /></label>
-    <label>Long Break: <input type="number" id="longBreak" value="15" /></label>
-    <button onclick="applySettings()">Apply</button>
+  <!-- Settings Dialog -->
+  <div id="settingsDialog">
+    <label>Study (mins):
+      <input type="number" id="studyTime" value="25" />
+    </label>
+    <label>Short Break:
+      <input type="number" id="shortBreak" value="5" />
+    </label>
+    <label>Long Break:
+      <input type="number" id="longBreak" value="15" />
+    </label>
+    <label>YouTube Background URL:
+      <input type="text" id="ytLink" placeholder="Enter YouTube URL" />
+    </label>
+    <button onclick="applySettings(); updateVideo(); toggleSettings();">Apply & Close</button>
   </div>
 
-  <!-- YouTube -->
-  <div id="youtubeSection">
-    <input type="text" id="ytLink" placeholder="Enter YouTube URL" />
-    <button onclick="updateVideo()">Set Background Video</button>
-  </div>
-</div>
   <script>
     let timer = 25 * 60;
     let timerDuration = 25 * 60;
@@ -64,11 +70,6 @@
         `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
     }
 
-    function toggleEdit() {
-      const edit = document.getElementById("editSection");
-      edit.style.display = edit.style.display === "none" ? "block" : "none";
-    }
-
     function applySettings() {
       const study = parseInt(document.getElementById('studyTime').value) || 25;
       timerDuration = study * 60;
@@ -77,7 +78,11 @@
       cycleCount = 0;
       document.getElementById("sessionLabel").innerText = "Study Session";
       updateDisplay();
-      document.getElementById("editSection").style.display = "none";
+    }
+
+    function toggleSettings() {
+      const dialog = document.getElementById('settingsDialog');
+      dialog.style.display = dialog.style.display === 'none' || dialog.style.display === '' ? 'block' : 'none';
     }
 
     function startTimer() {
@@ -104,10 +109,11 @@
       timer = timerDuration;
       updateDisplay();
     }
+
     function toggleFocusMode() {
       document.body.classList.toggle("focus-mode")
-
     }
+
     function handleSessionEnd() {
       if (isStudy) {
         cycleCount++;

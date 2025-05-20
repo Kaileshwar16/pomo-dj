@@ -3,7 +3,7 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: sans-serif;
+  font-family: ;'Finger Paints'
 }
 
 #video-container {
@@ -29,6 +29,23 @@ html, body {
   text-shadow: 1px 1px 3px black;
 }
 
+/* Settings button top-right */
+#settingsBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 11;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px 14px;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
 #timer {
   font-size: 2rem;
   margin: 10px 0;
@@ -38,12 +55,17 @@ button {
   margin: 5px;
   padding: 8px 12px;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 input {
   margin: 10px 0;
   padding: 8px;
   font-size: 1rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  border-radius: 8px;
 }
 
 /* Focus mode */
@@ -57,7 +79,7 @@ body.focus-mode #timerSection {
 }
 
 body.focus-mode #timerSection button {
-  display: none; /* hide timer buttons in focus mode */
+  display: none;
 }
 
 body.focus-mode #timer {
@@ -70,8 +92,61 @@ body.focus-mode #sessionLabel {
 }
 
 body.focus-mode #focusToggleBtn {
-  display: inline-block !important; /* except the Focus Mode toggle button */
+  display: inline-block !important;
 }
 
+/* Settings Dialog */
+#settingsDialog {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 20px;
+  z-index: 10;
+  display: none;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  width: 300px;
+  animation: fadeIn 0.3s ease;
+}
 
+#settingsDialog label {
+  font-weight: bold;
+  display: block;
+  margin: 10px 0 5px;
+  color: white;
+}
 
+#settingsDialog input {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#settingsDialog button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#settingsDialog button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
