@@ -16,6 +16,18 @@
   </div>
   <div id="video-overlay"></div>
 
+<div id="spotifyPlayerContainer" style="position: fixed; bottom: 20px; left: 20px; z-index: 2;">
+  <iframe 
+    id="spotifyPlayer"
+    style="border-radius:12px" 
+    src="https://open.spotify.com/embed/playlist/4eMwcq37nymzzelF4pLDI6" 
+    width="300" 
+    height="80" 
+    frameBorder="0" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+    loading="lazy">
+  </iframe>
+</div>
   <!-- Foreground UI -->
   <div id="content">
     <button id="settingsBtn" onclick="toggleSettings()">⚙️</button>
@@ -46,7 +58,10 @@
     <label>YouTube Background URL:
       <input type="text" id="ytLink" placeholder="Enter YouTube URL" />
     </label>
-    <button onclick="applySettings(); updateVideo(); toggleSettings();">Apply & Close</button>
+    <label>Spotify Playlist URL:
+      <input type="text" id="spotifyLink" placeholder="Paste Spotify playlist URL here" />
+    </label>
+    <button onclick="applySettings(); updateVideo(); toggleSettings(); updateSpotifyPlayer()">Apply & Close</button>
   </div>
 
   <script>
@@ -76,7 +91,7 @@
       if (tParam) {
         startSeconds = parseInt(tParam[1]) || 0;
       }
-//OoSzt2Ga8Oc   "2zU243B1jWE"
+      //OoSzt2Ga8Oc   "2zU243B1jWE"
       // Use default video if no valid videoId found
       if (!videoId) {
         videoId = "OoSzt2Ga8Oc"; // Your default video
@@ -159,6 +174,34 @@
       updateDisplay();
     }
 
+function updateSpotifyPlayer() {
+  const url = document.getElementById('spotifyLink').value.trim();
+  if (!url) {
+    document.getElementById('spotifyPlayer').src = "";
+    return;
+  }
+  // Extract the playlist ID from the URL
+  // Example Spotify playlist URL: https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M?si=abc123
+  let playlistId = null;
+  try {
+    const urlObj = new URL(url);
+    const parts = urlObj.pathname.split('/');
+    if (parts[1] === 'playlist') {
+      playlistId = parts[2];
+    }
+  } catch (e) {
+    alert("Invalid Spotify playlist URL");
+    return;
+  }
+  if (!playlistId) {
+    alert("Please enter a valid Spotify playlist URL");
+    return;
+  }
+
+  // Set iframe src for Spotify playlist embed
+  const embedSrc = `https://open.spotify.com/embed/playlist/${playlistId}`;
+  document.getElementById('spotifyPlayer').src = embedSrc;
+}
     window.onload = function() { 
       updateDisplay();
       updateVideo();
