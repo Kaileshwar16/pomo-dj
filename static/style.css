@@ -29,8 +29,16 @@ html, body {
 }
 
 #ytPlayer {
-  width: 100%;
-  height: 100%;
+ position: fixed;  /* change absolute to fixed for simpler positioning */
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* 16:9 aspect ratio */
+  min-height: 100vh; /* always at least full viewport height */
+  min-width: 177.77vh; /* always at least full width to maintain aspect */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 #content {
