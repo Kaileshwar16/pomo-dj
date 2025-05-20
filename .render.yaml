@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: your-service-name
+    env: go
+    buildCommand: go build -o main
+    startCommand: ./main
+    envVars:
+      - key: PORT
+        fromService: null
+    runtime: go1.24.3
