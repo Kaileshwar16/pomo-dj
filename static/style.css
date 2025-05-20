@@ -80,17 +80,19 @@ button {
   font-family: 'Finger Paint',cursive;
   margin: 5px;
   padding: 8px 12px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  background-color: #333;        /* Dark gray button bg */
-  color: #eee;                   /* Light text */
-  border: 1.5px solid #555;      /* Soft border */
+  background-color: rgba(255, 255, 255, 0.1);        /* Dark gray button bg */
+  backdrop-filter: blur(8px);
+- webkit-backdrop-filter: blur(8px);
+  color: white;                   /* Light text */
+  border: 1.5px solid rgba(255, 255, 255, 0.1);      /* Soft border */
   border-radius: 6px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, text-decoration 0.3s ease;
 }
 button:hover {
-  background-color: #555;        /* Lighter gray on hover */
-  box-shadow: 0 0 4px rgba(119,119,119,0.5);     /* subtle glow */
+  background-color: rgba(255, 255, 255, 0.2);        /* Lighter gray on hover */
+  box-shadow: 0 0 8px rgba(225,225,225,0.4);     /* subtle glow */
   color: white;
 }
 input {
@@ -128,6 +130,7 @@ body.focus-mode #sessionLabel {
 
 body.focus-mode #focusToggleBtn {
   display: inline-block !important;
+  font-size: 2rem;
 }
 
 /* Settings Dialog */
@@ -135,7 +138,7 @@ body.focus-mode #focusToggleBtn {
   position: fixed;
   top: 70px;
   right: 20px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(12px);
   border-radius: 16px;
   padding: 20px;
