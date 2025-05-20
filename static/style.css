@@ -5,7 +5,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: 'Finger Paint',cursive;
-  background-color: #121212;
+  background-color: semi-transparent;
 }
 
 #video-container {
@@ -16,6 +16,16 @@ html, body {
   height: 100vh;
   z-index: -1;
   pointer-events: none;
+}
+
+#video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* semi-transparent black */
+  z-index: 0;
 }
 
 #ytPlayer {
@@ -167,3 +177,5 @@ body.focus-mode #focusToggleBtn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+

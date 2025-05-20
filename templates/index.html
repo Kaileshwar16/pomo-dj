@@ -12,8 +12,9 @@
 <body>
   <!-- YouTube Background -->
   <div id="video-container">
-    <iframe id="ytPlayer" src="" frameborder="0" allowfullscreen></iframe>
+    <iframe id="ytPlayer" src="" frameborder="0" allow="autoplay" allowfullscreen></iframe>
   </div>
+  <div id="video-overlay"></div>
 
   <!-- Foreground UI -->
   <div id="content">
@@ -55,12 +56,35 @@
     let isStudy = true;
     let cycleCount = 0;
 
+    // Updated updateVideo function:
     function updateVideo() {
-      const url = document.getElementById('ytLink').value;
-      const videoId = url.split('v=')[1]?.split('&')[0];
-      if (!videoId) return alert('Invalid YouTube URL');
-      document.getElementById('ytPlayer').src =
-        `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1`;
+      const ytInput = document.getElementById('ytLink');
+      let url = ytInput.value.trim();
+
+      let videoId = "";
+      let startSeconds = 0;
+
+      // Extract video ID from URL (handle v= and youtu.be)
+      if (url.includes("v=")) {
+        videoId = url.split('v=')[1].split('&')[0];
+      } else if (url.includes("youtu.be")) {
+        videoId = url.split("youtu.be/")[1].split('?')[0];
+      }
+
+      // Extract start time in seconds from t= param (if any)
+      const tParam = url.match(/[?&]t=(\d+)(s?)/);
+      if (tParam) {
+        startSeconds = parseInt(tParam[1]) || 0;
+      }
+
+      // Use default video if no valid videoId found
+      if (!videoId) {
+        videoId = "cu959m5z07Q"; // Your default video
+        startSeconds = 173;      // Start time in seconds (2m53s)
+      }
+
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&start=${startSeconds}`;
+      document.getElementById('ytPlayer').src = embedUrl;
     }
 
     function updateDisplay() {
@@ -135,7 +159,10 @@
       updateDisplay();
     }
 
-    window.onload = updateDisplay;
+    window.onload = function() { 
+      updateDisplay();
+      updateVideo();
+    };
   </script>
 </body>
 </html>
