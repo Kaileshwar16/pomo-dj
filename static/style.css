@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap');
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: ;'Finger Paints'
+  font-family: 'Finger Paint',cursive;
+  background-color: #121212;
 }
 
 #video-container {
@@ -45,6 +47,11 @@ html, body {
   backdrop-filter: blur(10px);
   cursor: pointer;
 }
+#settingsBtn:hover {
+  background-color: #555;        /* Lighter gray on hover */
+  box-shadow: 0 0 4px rgba(119,119,119,0.5);     /* subtle glow */
+  color: white;
+}
 
 #timer {
   font-size: 2rem;
@@ -52,12 +59,22 @@ html, body {
 }
 
 button {
+  font-family: 'Finger Paint',cursive;
   margin: 5px;
   padding: 8px 12px;
   font-size: 1rem;
   cursor: pointer;
+  background-color: #333;        /* Dark gray button bg */
+  color: #eee;                   /* Light text */
+  border: 1.5px solid #555;      /* Soft border */
+  border-radius: 6px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, text-decoration 0.3s ease;
 }
-
+button:hover {
+  background-color: #555;        /* Lighter gray on hover */
+  box-shadow: 0 0 4px rgba(119,119,119,0.5);     /* subtle glow */
+  color: white;
+}
 input {
   margin: 10px 0;
   padding: 8px;
