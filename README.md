@@ -17,14 +17,15 @@ A minimal and real-time Pomodoro timer app built with Go using the Gin framework
 
 ![arch](static/arch.png)
 
-🧱 Tech Stack
+🛠️ Tech Stack
 
-  Layer               Tech
-Backend     -->  Go, Gin Framework
-Realtime    -->  Gorilla WebSocket
-Frontend    -->  Vanilla HTML, CSS, JavaScript
-Concurrency -->  Go Routines & Channels
+    Backend: Go, Gin, Gorilla WebSocket
 
+    Frontend: Vanilla JS / React (you can customize)
+
+    Communication: WebSocket Protocol
+
+    Concurrency: Go Routines and Channels
 
 ![Pomo DJ](static/pomo-dj.png)
 
