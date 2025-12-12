@@ -31,4 +31,3 @@ A minimal and real-time Pomodoro timer app built with Go using the Gin framework
 
 
 
-<pre lang="md"> ## ⚙️ Getting Started ### 1. Clone the Repo ```bash git clone https://github.com/your-username/pomodoro-live-chat.git cd pomodoro-live-chat ``` ### 2. Install Dependencies ```bash go mod tidy ``` ### 3. Run the Server ```bash go run main.go ``` ### 4. Open Your Browser Visit: [http://localhost:8080](http://localhost:8080) </pre>
