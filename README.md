@@ -29,5 +29,6 @@ A minimal and real-time Pomodoro timer app built with Go using the Gin framework
 
 ![Pomo DJ](static/pomo-dj.png)
 
+..
 
 
